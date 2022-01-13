@@ -149,13 +149,25 @@ public final class App {
         val conn = ConnectSQLite.connect();
         @Cleanup
         val prep = conn.prepareStatement("insert into chinaRegion values (?, ?, ?, ?);");
-        for (ChinaRegionsInfo chinaRegionsInfo : chinaRegionsInfos) {
-            prep.setString(1, chinaRegionsInfo.getCode());
-            prep.setString(2, chinaRegionsInfo.getName());
-            prep.setInt(3, chinaRegionsInfo.getType());
-            prep.setString(4, chinaRegionsInfo.getParentCode());
-            prep.addBatch();
-        }
+        chinaRegionsInfos.forEach(chinaRegionsInfo -> {
+            try {
+                prep.setString(1, chinaRegionsInfo.getCode());
+                prep.setString(2, chinaRegionsInfo.getName());
+                prep.setInt(3, chinaRegionsInfo.getType());
+                prep.setString(4, chinaRegionsInfo.getParentCode());
+                prep.addBatch();
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        });
+        // for (ChinaRegionsInfo chinaRegionsInfo : chinaRegionsInfos) {
+        // prep.setString(1, chinaRegionsInfo.getCode());
+        // prep.setString(2, chinaRegionsInfo.getName());
+        // prep.setInt(3, chinaRegionsInfo.getType());
+        // prep.setString(4, chinaRegionsInfo.getParentCode());
+        // prep.addBatch();
+        // }
         conn.setAutoCommit(false);
         prep.executeBatch();
         conn.setAutoCommit(true);

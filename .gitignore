@@ -2,7 +2,7 @@
 # Standard Maven .gitignore
 #
 target/
-data/
+data/*.db
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
